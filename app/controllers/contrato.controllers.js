@@ -15,7 +15,6 @@ const connection = mysql.createConnection({
 	database: access_db,
 	dialect: "mysql",
 });
-
 // Estabelecendo conexão com o Banco de Dados
 connection.connect(function (err) {
 	if (err) throw err;
@@ -50,17 +49,9 @@ exports.create = (req, res) => {
 			message: "Status de contado igual a vazio",
 		});
 	}
-
+	//
 	var params = req.body;
-
 	console.log(params);
-
-	// const fieldcalc = { id md5(params.id) };
-
-	// params = Object.assign(params, fieldcalc);
-
-	// console.log(params);
-
 	// Inserindo novos contratos no Banco
 	connection.query(
 		"INSERT INTO dev_consultor SET ?",
@@ -76,22 +67,21 @@ exports.create = (req, res) => {
 };
 
 // Retornando todos os Contratos
-// exports.findAll = (req, res) => {
-// 	connection.query(
-// 		"select * from cadastro",
+exports.findCpf = (req, res) => {
+	connection.query(
+		"select cpf from dev_consultor",
 
-// 		function (error, result, fields) {
-// 			if (error) throw error;
-// 			res.end(JSON.stringify(result));
-// 			let teste = result;
-// 			console.log(teste[1].id);
-// 		}
-// 	);
-// };
+		function (error, result, fields) {
+			if (error) throw error;
+			res.end(JSON.stringify(result));
+			let teste = result;
+			console.log(teste[1].id);
+		}
+	);
+};
 
 // Pegando Unico Registro
 exports.getCadastro = (req, res) => {
-	//connection.query('select *, DATE_FORMAT(dataCont,"%m/%d/%y") from contratos where hashInfy=?',
 	connection.query(
 		"select id,nome, sobrenome, rede_rank from dev_consultor where id=?",
 		[req.params.id],
@@ -102,18 +92,3 @@ exports.getCadastro = (req, res) => {
 		}
 	);
 };
-
-// // Atualizando Registros
-// exports.update = (req, res) => {
-// 	connection.query(
-// 		`Update dev_consultor SET rede_sec=id where rede_sec=null`,
-// 		[
-// 			req.body.id,
-// 			req.body.rede_sec
-// 		],
-// 		function (error, result) {
-// 			if (error) throw error();
-// 			res.end(JSON.stringify(result));
-// 		}
-// 	);
-// };
